@@ -1,0 +1,5 @@
+{
+  "/api/weather/search/route": "app/api/weather/search/route.js",
+  "/api/weather/current/route": "app/api/weather/current/route.js",
+  "/page": "app/page.js"
+}
