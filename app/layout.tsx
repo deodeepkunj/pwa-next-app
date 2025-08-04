@@ -196,10 +196,6 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/favicon.ico" />
 
         {/* Microsoft Tiles */}
-        <meta
-          name="msapplication-TileImage"
-          content="/icons/icon-144x144.png"
-        />
         <meta name="msapplication-TileColor" content="#74b9ff" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
 
