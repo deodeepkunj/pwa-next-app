@@ -154,7 +154,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* PWA Meta Tags */}
-        <link rel="manifest" href="/manifest.json" />
+        <link
+          rel="manifest"
+          href="/manifest.json"
+          crossOrigin="use-credentials"
+        />
         <meta name="theme-color" content="#74b9ff" />
         <meta name="background-color" content="#667eea" />
 
