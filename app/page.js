@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import "animate.css";
 
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
@@ -10,8 +9,54 @@ export default function WeatherApp() {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [locationStatus, setLocationStatus] = useState("checking"); // checking, granted, denied, unavailable, error
+  const [locationStatus, setLocationStatus] = useState("checking");
   const [showLocationPrompt, setShowLocationPrompt] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [showInstallBanner, setShowInstallBanner] = useState(false);
+
+  // Handle PWA installation and online/offline status
+  useEffect(() => {
+    // Handle PWA installation prompt
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+      setShowInstallBanner(true);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    // Handle online/offline status
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    // Check if app is already installed
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setShowInstallBanner(false);
+    }
+
+    return () => {
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+  // Handle PWA installation
+  const handleInstallApp = async () => {
+    if (installPrompt) {
+      const result = await installPrompt.prompt();
+      console.log("Install prompt result:", result);
+      setInstallPrompt(null);
+      setShowInstallBanner(false);
+    }
+  };
 
   // Check geolocation permission status
   const checkLocationPermission = async () => {
@@ -21,7 +66,6 @@ export default function WeatherApp() {
     }
 
     try {
-      // Check if permissions API is available
       if (navigator.permissions) {
         const permission = await navigator.permissions.query({
           name: "geolocation",
@@ -42,7 +86,6 @@ export default function WeatherApp() {
             return "prompt";
         }
       } else {
-        // Fallback for browsers without permissions API
         setLocationStatus("prompt");
         return "prompt";
       }
@@ -63,8 +106,8 @@ export default function WeatherApp() {
 
       const options = {
         enableHighAccuracy: true,
-        timeout: 15000, // 15 seconds timeout
-        maximumAge: 300000, // 5 minutes cache
+        timeout: 15000,
+        maximumAge: 300000,
       };
 
       navigator.geolocation.getCurrentPosition(
@@ -120,7 +163,6 @@ export default function WeatherApp() {
   const handleManualLocationSearch = () => {
     setShowLocationPrompt(false);
     setError("");
-    // Focus on search input
     const searchInput = document.querySelector(".search-input");
     if (searchInput) {
       searchInput.focus();
@@ -164,11 +206,17 @@ export default function WeatherApp() {
 
       if (data.success) {
         setWeather(data.weather);
+      } else if (data.offline) {
+        setError("You are offline. Showing cached weather data if available.");
       } else {
         setError(data.error || "Failed to fetch weather data");
       }
     } catch (err) {
-      setError("Network error. Please try again.");
+      if (!isOnline) {
+        setError("You are offline. Please check your internet connection.");
+      } else {
+        setError("Network error. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -239,7 +287,6 @@ export default function WeatherApp() {
 
       switch (permissionStatus) {
         case "granted":
-          // Permission already granted, get location directly
           try {
             const location = await getCurrentLocation();
             await fetchWeather(location);
@@ -250,19 +297,16 @@ export default function WeatherApp() {
           break;
 
         case "denied":
-          // Permission denied, show manual search prompt
           setShowLocationPrompt(true);
           break;
 
         case "unavailable":
-          // Geolocation not supported
           setShowLocationPrompt(true);
           setError("Geolocation is not supported by your browser");
           break;
 
         case "prompt":
         default:
-          // Need to request permission
           setShowLocationPrompt(true);
           break;
       }
@@ -270,20 +314,52 @@ export default function WeatherApp() {
 
     initializeApp();
 
-    // Add click outside listener
     document.addEventListener("click", handleClickOutside);
 
-    // Cleanup
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  console.log(process.env.NODE_ENV);
 
   return (
     <div
       className={`weather-app ${weather ? getBackgroundClass(weather.condition.text) : "default-bg"}`}
     >
       <div className="container">
+        {/* PWA Install Banner */}
+        {showInstallBanner && (
+          <div className="install-banner animate__animated animate__slideInDown">
+            <div className="install-content">
+              <span className="install-icon">📱</span>
+              <div className="install-text">
+                <strong>Install Weather App</strong>
+                <p>Get quick access and offline features</p>
+              </div>
+              <div className="install-actions">
+                <button className="install-button" onClick={handleInstallApp}>
+                  Install
+                </button>
+                <button
+                  className="install-dismiss"
+                  onClick={() => setShowInstallBanner(false)}
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Offline Indicator */}
+        {!isOnline && (
+          <div className="offline-indicator animate__animated animate__slideInDown">
+            <span className="offline-icon">📡</span>
+            <span>You are offline</span>
+          </div>
+        )}
+
         <header className="header animate__animated animate__fadeInDown">
           <h1 className="title">Weather App</h1>
           <p className="subtitle">
