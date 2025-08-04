@@ -162,24 +162,6 @@ export default function RootLayout({
         <meta name="theme-color" content="#74b9ff" />
         <meta name="background-color" content="#667eea" />
 
-        {/* Apple Touch Icons */}
-        <link rel="apple-touch-icon" href="/icons/icon-180x180.png" />
-        <link
-          rel="apple-touch-icon"
-          sizes="152x152"
-          href="/icons/icon-152x152.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/icons/icon-180x180.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          sizes="167x167"
-          href="/icons/icon-167x167.png"
-        />
-
         {/* Favicon */}
         <link
           rel="icon"

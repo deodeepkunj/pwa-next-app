@@ -2,8 +2,6 @@ const CACHE_NAME = "weather-app-v1.0.0";
 const STATIC_CACHE_URLS = [
   "/",
   "/manifest.json",
-  "/icons/icon-192x192.png",
-  "/icons/icon-512x512.png",
   "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css",
   "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap",
 ];
@@ -167,8 +165,8 @@ self.addEventListener("push", (event) => {
     const data = event.data.json();
     const options = {
       body: data.body || "Weather update available",
-      icon: "/icons/icon-192x192.png",
-      badge: "/icons/badge-72x72.png",
+      icon: "",
+      badge: "",
       vibrate: [200, 100, 200],
       data: {
         url: data.url || "/",
