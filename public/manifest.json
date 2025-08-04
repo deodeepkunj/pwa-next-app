@@ -12,32 +12,36 @@
   "dir": "ltr",
   "categories": ["weather", "utilities", "lifestyle"],
   "screenshots": [],
-  "shortcuts": [
+  "icons": [
     {
-      "name": "Current Location Weather",
-      "short_name": "My Weather",
-      "description": "Get weather for your current location",
-      "url": "/?location=current",
-      "icons": [
-        {
-          "src": "/icons/shortcut-location.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
+      "sizes": "512x512",
+      "src": "/icons/icon-512.png",
+      "type": "image/png"
     },
     {
-      "name": "Search Weather",
-      "short_name": "Search",
-      "description": "Search weather for any city",
-      "url": "/?action=search",
-      "icons": [
-        {
-          "src": "/icons/shortcut-search.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
+      "sizes": "48x48",
+      "src": "/icons/icon-48.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "72x72",
+      "src": "/icons/icon-72.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "96x96",
+      "src": "/icons/icon-96.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "144x144",
+      "src": "/icons/icon-144.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "192x192",
+      "src": "/icons/icon-192.png",
+      "type": "image/png"
     }
   ],
   "prefer_related_applications": false,
