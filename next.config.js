@@ -5,6 +5,21 @@ const withPWA = require("next-pwa")({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
+  workboxOptions: {
+    runtimeCaching: [
+      {
+        urlPattern: /^https:\/\/your-api-domain\.com\/.*$/,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "api-cache",
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 300,
+          },
+        },
+      },
+    ],
+  },
   runtimeCaching: [
     // Your runtimeCaching array
     {
