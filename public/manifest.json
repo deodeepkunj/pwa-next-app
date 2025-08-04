@@ -11,22 +11,7 @@
   "lang": "en-US",
   "dir": "ltr",
   "categories": ["weather", "utilities", "lifestyle"],
-  "screenshots": [
-    {
-      "src": "/screenshots/desktop-wide.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Weather App on Desktop"
-    },
-    {
-      "src": "/screenshots/mobile-narrow.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Weather App on Mobile"
-    }
-  ],
+  "screenshots": [],
   "shortcuts": [
     {
       "name": "Current Location Weather",
@@ -55,7 +40,6 @@
       ]
     }
   ],
-  "related_applications": [],
   "prefer_related_applications": false,
   "edge_side_panel": {
     "preferred_width": 400
